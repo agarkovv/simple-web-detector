@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EFDL Week7 - Instance Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            margin: 2rem;
+        }
+
+        .results {
+            margin-top: 1rem;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            overflow: auto;
+        }
+
+        .img-preview {
+            max-width: 100%;
+            height: auto;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Instance Detection Demo</h2>
+    <p>Paste an image URL and submit to get detected objects.</p>
+    <form id="form">
+        <label for="url">Image URL</label>
+        <input type="url" id="url" name="url" placeholder="http://images.cocodataset.org/val2017/000000001268.jpg"
+            required>
+        <button type="submit">Predict</button>
+    </form>
+
+    <img id="preview" class="img-preview" alt="Preview" />
+
+    <div class="results" id="results" style="display:none;">
+        <h4>Detected Objects</h4>
+        <pre id="objects"></pre>
+    </div>
+
+    <script>
+        const form = document.getElementById('form');
+        const urlInput = document.getElementById('url');
+        const results = document.getElementById('results');
+        const objectsPre = document.getElementById('objects');
+        const previewImg = document.getElementById('preview');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = urlInput.value.trim();
+            if (!url) return;
+            previewImg.src = url;
+            try {
+                const res = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                const contentType = res.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) {
+                    const text = await res.text();
+                    throw new Error(`Unexpected response: ${text.slice(0, 200)}...`);
+                }
+
+                const data = await res.json();
+                if (!res.ok) {
+                    const msg = data && data.error ? data.error : 'Request failed';
+                    throw new Error(msg);
+                }
+
+                objectsPre.textContent = JSON.stringify(data.objects, null, 2);
+                results.style.display = 'block';
+            } catch (err) {
+                objectsPre.textContent = 'Error: ' + (err && err.message ? err.message : err);
+                results.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
