@@ -7,3 +7,4 @@ furl
 pillow
 grpcio-tools
 grpcio
+supervisor
