@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EFDL Week7 - Instance Detection</title>
+    <title>Instance Detection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
     <style>
         body {
@@ -59,7 +59,7 @@
             if (!url) return;
             previewImg.src = url;
             try {
-                const res = await fetch('/predict', {
+                const res = await fetch('http://localhost:8080/predict', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url })

@@ -11,6 +11,7 @@ from torchvision.models.detection import (
     FasterRCNN_ResNet50_FPN_V2_Weights,
     fasterrcnn_resnet50_fpn_v2,
 )
+from flask_cors import CORS
 
 app = Flask(
     __name__,
@@ -18,6 +19,8 @@ app = Flask(
     static_folder="static",
     template_folder="templates",
 )
+CORS(app)
+
 metrics = PrometheusMetrics(app)
 
 print("started server")
