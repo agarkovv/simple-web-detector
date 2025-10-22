@@ -6,10 +6,16 @@ RUN pip3 install --timeout 1000 -r requirements.txt
 RUN mkdir /app
 WORKDIR /app
 
+COPY proto/inference.proto .
 RUN ls -la
 COPY http-server.py .
-COPY static ./static
+COPY grpc-server.py .
+COPY run_codegen.py .
+
+RUN python3 run_codegen.py
+COPY supervisord.conf .
 
 EXPOSE 8080
+EXPOSE 9090
 
-ENTRYPOINT ["python3", "/app/http-server.py"]
+ENTRYPOINT ["supervisord", "-c", "supervisord.conf"]

@@ -5,3 +5,6 @@ numpy==1.26.4
 prometheus-flask-exporter
 furl
 pillow
+grpcio-tools
+grpcio
+supervisor
