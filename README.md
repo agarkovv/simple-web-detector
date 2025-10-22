@@ -7,3 +7,6 @@ docker compose up
 ```
 ### Tests
 To run tests, in other terminal run `pytest tests.py`
+
+### Web client
+To use web demo, open `templates/index.html` in browser
