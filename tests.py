@@ -41,7 +41,7 @@ def calc_score(actual, predicted):
     return 2 * score / (len(actual) + len(predicted))
 
 
-@pytest.mark.run(order=2)
+@pytest.mark.run(order=1)
 def test_http_endpoint(http_host, eval_data, capsys):
     with capsys.disabled():
         predict_url = str(furl(http_host) / "predict")
