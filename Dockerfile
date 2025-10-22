@@ -14,6 +14,8 @@ COPY run_codegen.py .
 
 RUN python3 run_codegen.py
 COPY supervisord.conf .
+COPY templates ./templates
+COPY static ./static
 
 EXPOSE 8080
 EXPOSE 9090
